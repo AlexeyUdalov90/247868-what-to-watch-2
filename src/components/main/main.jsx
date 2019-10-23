@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import FilmCard from '../filmCard/filmCard.jsx';
 
 const Main = (props) => {
-  const {films} = props;
+  const {films, onClickTitle} = props;
   return <div>
     <section className="movie-card">
       <div className="movie-card__bg">
@@ -98,7 +98,7 @@ const Main = (props) => {
 
         <div className="catalog__movies-list">
           {films.map((film, index) => {
-            return <FilmCard film={film} key={film + index} />;
+            return <FilmCard film={film} onClickTitle={onClickTitle} key={film + index} />;
           })}
         </div>
 
@@ -126,6 +126,7 @@ const Main = (props) => {
 
 Main.propTypes = {
   films: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onClickTitle: PropTypes.func,
 };
 
 export default Main;
