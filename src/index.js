@@ -2,13 +2,14 @@ import React from 'react';
 import ReactDom from 'react-dom';
 
 import Main from './components/main/main.jsx';
+import films from './moks/films.js';
 
-const titleClick = function () {
+const titleClickHandler = function () {
 
 };
 
 const init = () => {
-  ReactDom.render(<Main films={[`Fantastic Beasts: The Crimes of Grindelwald`, `Bohemian Rhapsody`, `Macbeth`, `Aviator`]} onClickTitle={titleClick} />, document.querySelector(`#root`));
+  ReactDom.render(<Main films={films} onClickTitle={titleClickHandler} />, document.querySelector(`#root`));
 };
 
 init();

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FilmCard from '../filmCard/filmCard.jsx';
 
-const Main = (props) => {
-  const {films, onClickTitle} = props;
+import FilmList from '../filmList/filmList.jsx';
+
+const Main = ({films, onClickTitle}) => {
   return <div>
     <section className="movie-card">
       <div className="movie-card__bg">
@@ -96,11 +96,13 @@ const Main = (props) => {
           </li>
         </ul>
 
-        <div className="catalog__movies-list">
+        <FilmList films={films} onClickTitle={onClickTitle} />
+
+        {/* <div className="catalog__movies-list">
           {films.map((film, index) => {
             return <FilmCard film={film} onClickTitle={onClickTitle} key={film + index} />;
           })}
-        </div>
+        </div> */}
 
         <div className="catalog__more">
           <button className="catalog__button" type="button">Show more</button>
@@ -125,7 +127,7 @@ const Main = (props) => {
 };
 
 Main.propTypes = {
-  films: PropTypes.arrayOf(PropTypes.string).isRequired,
+  films: PropTypes.arrayOf(PropTypes.object).isRequired,
   onClickTitle: PropTypes.func,
 };
 
