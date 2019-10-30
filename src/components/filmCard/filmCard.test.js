@@ -8,8 +8,23 @@ it(`FilmCard correctly renders after relaunch`, () => {
     id: 0,
     name: ``,
     imageUrl: ``,
+    video: {
+      url: ``,
+      type: ``,
+    },
   };
-  const tree = renderer.create(<FilmCard film={moks} onClickTitle={jest.fn()} onMouseEnterFilm={jest.fn()} />).toJSON();
+  const tree = renderer.create(<FilmCard film={moks} onClickTitle={jest.fn()} onMouseEnterFilm={jest.fn()} onMouseLeaveFilm={jest.fn()} />, {
+    createNodeMock: (element) => {
+      if (element.type === `video`) {
+        return {
+          current: {
+            src: ``,
+          },
+        };
+      }
+      return null;
+    }
+  }).toJSON();
 
   expect(tree).toMatchSnapshot();
 });
