@@ -6,6 +6,9 @@ import VideoPlayer from './videoPlayer.jsx';
 
 Enzyme.configure({adapter: new Adapter()});
 
+window.HTMLMediaElement.prototype.play = () => { };
+window.HTMLMediaElement.prototype.pause = () => { };
+
 it(`Play video`, () => {
   const moсkVideo = {
     url: ``,
