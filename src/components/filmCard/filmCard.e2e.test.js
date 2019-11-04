@@ -7,13 +7,17 @@ import FilmCard from './filmCard.jsx';
 Enzyme.configure({adapter: new Adapter()});
 
 it(`Click on title`, () => {
-  const moks = {
+  const moсks = {
     id: 0,
     name: ``,
     imageUrl: ``,
+    video: {
+      url: ``,
+      type: ``,
+    },
   };
   const clickHandler = jest.fn();
-  const filmCard = shallow(<FilmCard film={moks} onClickTitle={clickHandler} onMouseEnterFilm={jest.fn()} />);
+  const filmCard = shallow(<FilmCard film={moсks} onClickTitle={clickHandler} onMouseEnterFilm={jest.fn()} onMouseLeaveFilm={jest.fn()} />);
   const title = filmCard.find(`.small-movie-card__title`);
   title.simulate(`click`);
 
@@ -21,15 +25,19 @@ it(`Click on title`, () => {
 });
 
 it(`Mouse enter on film card`, () => {
-  const moks = {
+  const moсks = {
     id: 0,
     name: ``,
     imageUrl: ``,
+    video: {
+      url: ``,
+      type: ``,
+    },
   };
   const mouseEnterHandler = jest.fn();
-  shallow(<FilmCard film={moks} onClickTitle={jest.fn()} onMouseEnterFilm={mouseEnterHandler} />)
+  shallow(<FilmCard film={moсks} onClickTitle={jest.fn()} isPlaying={false} onMouseEnterFilm={mouseEnterHandler} onMouseLeaveFilm={jest.fn()} />)
     .find(`.small-movie-card`)
     .simulate(`mouseenter`);
 
-  expect(mouseEnterHandler).toHaveBeenCalledWith(moks);
+  expect(mouseEnterHandler).toHaveBeenCalled();
 });

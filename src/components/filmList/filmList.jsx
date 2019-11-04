@@ -8,19 +8,24 @@ class FilmList extends PureComponent {
     super(props);
 
     this.state = {
-      currentFilm: {},
+      currentFilm: -1,
     };
   }
-  _filmCardMouseEnterHandler(film) {
+  _mouseEnterFilmHandler(film) {
     this.setState({
       currentFilm: film,
+    });
+  }
+  _mouseLeaveFilmHandler() {
+    this.setState({
+      currentFilm: -1,
     });
   }
   render() {
     return (
       <div className="catalog__movies-list">
-        {this.props.films.map((film) => {
-          return <FilmCard film={film} onClickTitle={this.props.onClickTitle} onMouseEnterFilm={this._filmCardMouseEnterHandler.bind(this)} key={film.id} />;
+        {this.props.films.map((film, i) => {
+          return <FilmCard film={film} isPlaying={i === this.state.currentFilm} onClickTitle={this.props.onClickTitle} onMouseEnterFilm={this._mouseEnterFilmHandler.bind(this, i)} onMouseLeaveFilm={this._mouseLeaveFilmHandler.bind(this)} key={film.id} />;
         })}
       </div>
     );
