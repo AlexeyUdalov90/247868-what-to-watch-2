@@ -11,7 +11,6 @@ exports[`FilmCard correctly renders after relaunch 1`] = `
   >
     <video
       height="175"
-      muted={true}
       poster=""
       width="280"
     />

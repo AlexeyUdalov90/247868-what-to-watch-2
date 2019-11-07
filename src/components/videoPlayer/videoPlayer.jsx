@@ -15,16 +15,17 @@ class VideoPlayer extends PureComponent {
   }
   render() {
     const {poster} = this.props;
-    const {isMuted} = this.state;
     return (
-      <video poster={poster} muted={isMuted} width="280" height="175" ref={this._videoRef}/>
+      <video poster={poster} width="280" height="175" ref={this._videoRef}/>
     );
   }
   componentDidMount() {
     const {videoInfo} = this.props;
+    const {isMuted} = this.state;
     const video = this._videoRef.current;
 
     video.src = videoInfo.url;
+    video.muted = isMuted;
 
     video.oncanplaythrough = () => {
       this.setState({
