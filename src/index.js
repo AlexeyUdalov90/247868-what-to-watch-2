@@ -1,15 +1,22 @@
 import React from 'react';
 import ReactDom from 'react-dom';
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
 
-import Main from './components/main/main.jsx';
+import App from './components/app/app.jsx';
 import films from './moks/films.js';
+import {reducer} from './reducer.js';
 
 const titleClickHandler = function () {
 
 };
 
 const init = () => {
-  ReactDom.render(<Main films={films} onClickTitle={titleClickHandler} />, document.querySelector(`#root`));
+  const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+
+  ReactDom.render(<Provider store={store}>
+    <App films={films} onClickTitle={titleClickHandler} />
+  </Provider>, document.querySelector(`#root`));
 };
 
 init();

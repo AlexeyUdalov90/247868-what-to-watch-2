@@ -58,6 +58,7 @@ FilmCard.propTypes = {
     name: PropTypes.string.isRequired,
     imageUrl: PropTypes.string.isRequired,
     video: PropTypes.object.isRequired,
+    genre: PropTypes.string,
   }),
   onClickTitle: PropTypes.func,
   onMouseEnterFilm: PropTypes.func,

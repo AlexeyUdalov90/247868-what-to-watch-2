@@ -8,7 +8,6 @@ Enzyme.configure({adapter: new Adapter()});
 
 it(`Click on title`, () => {
   const moсks = {
-    id: 0,
     name: ``,
     imageUrl: ``,
     video: {
@@ -26,7 +25,6 @@ it(`Click on title`, () => {
 
 it(`Mouse enter on film card`, () => {
   const moсks = {
-    id: 0,
     name: ``,
     imageUrl: ``,
     video: {
