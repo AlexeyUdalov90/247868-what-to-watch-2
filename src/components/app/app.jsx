@@ -10,10 +10,10 @@ const App = ({films, onClickTitle, onChangeFilter, genreActive}) => {
 };
 
 App.propTypes = {
-  genreActive: PropTypes.string,
+  genreActive: PropTypes.string.isRequired,
   films: PropTypes.arrayOf(PropTypes.object).isRequired,
   onClickTitle: PropTypes.func,
-  onChangeFilter: PropTypes.func,
+  onChangeFilter: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {

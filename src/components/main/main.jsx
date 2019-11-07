@@ -92,9 +92,9 @@ const Main = ({films, onClickTitle, onChangeFilter, genreActive}) => {
 
 Main.propTypes = {
   films: PropTypes.arrayOf(PropTypes.object).isRequired,
-  genreActive: PropTypes.string,
+  genreActive: PropTypes.string.isRequired,
   onClickTitle: PropTypes.func,
-  onChangeFilter: PropTypes.func,
+  onChangeFilter: PropTypes.func.isRequired,
 };
 
 export default Main;
