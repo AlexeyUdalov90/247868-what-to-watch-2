@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
-import {ActionCreator} from '../../reducer.js';
+import {ActionCreator, filterFilms} from '../../reducer.js';
 import Main from '../main/main.jsx';
 
 const App = ({films, onClickTitle, onChangeFilter, genreActive}) => {
@@ -18,14 +18,13 @@ App.propTypes = {
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   genreActive: state.genreActive,
-  films: state.films,
+  films: filterFilms(state.films, state.genreActive),
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onChangeFilter: (genre) => {
       dispatch(ActionCreator.changeGenre(genre));
-      dispatch(ActionCreator.changeFilmList(genre));
     },
   };
 };
