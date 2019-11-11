@@ -10,12 +10,8 @@ window.HTMLMediaElement.prototype.play = () => { };
 window.HTMLMediaElement.prototype.pause = () => { };
 
 it(`Play video`, () => {
-  const moсkVideo = {
-    url: ``,
-    type: ``,
-  };
 
-  const video = mount(<VideoPlayer poster={``} videoInfo={moсkVideo} isPlaying={false}/>);
+  const video = mount(<VideoPlayer poster={``} video={``} isPlaying={false}/>);
   video.setState({
     isPlaying: true,
   });
@@ -23,12 +19,8 @@ it(`Play video`, () => {
 });
 
 it(`Stop video`, () => {
-  const moсkVideo = {
-    url: ``,
-    type: ``,
-  };
 
-  const video = mount(<VideoPlayer poster={``} videoInfo={moсkVideo} isPlaying={true}/>);
+  const video = mount(<VideoPlayer poster={``} video={``} isPlaying={true}/>);
   video.setState({
     isPlaying: false,
   });
