@@ -35,17 +35,17 @@ class FilmCard extends PureComponent {
     }
   }
   render() {
-    const {film: {name, imageUrl, video}, onClickTitle} = this.props;
+    const {film: {name, previewImage, previewVideoLink}, onClickTitle} = this.props;
     const {isPlaying} = this.state;
 
     return (
       <article className="small-movie-card catalog__movies-card" onMouseEnter= {this._mouseEnterFilmHandler} onMouseLeave={this._mouseLeaveFilmHandler}>
         <div className="small-movie-card__image">
-          <VideoPlayer poster={imageUrl} videoInfo={video} isPlaying={isPlaying} />
+          <VideoPlayer poster={previewImage} video={previewVideoLink} isPlaying={isPlaying} />
           {/* <img src={imageUrl} alt={name} width="280" height="175" /> */}
         </div>
         <h3 className="small-movie-card__title" onClick={onClickTitle}>
-          <a className="small-movie-card__link" href="movie-page.html">{name}</a>
+          <a className="small-movie-card__link" href="detail">{name}</a>
         </h3>
       </article>
     );
@@ -53,11 +53,11 @@ class FilmCard extends PureComponent {
 }
 
 FilmCard.propTypes = {
-  film: PropTypes.exact({
+  film: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string.isRequired,
-    imageUrl: PropTypes.string.isRequired,
-    video: PropTypes.object.isRequired,
+    previewImage: PropTypes.string.isRequired,
+    previewVideoLink: PropTypes.string.isRequired,
     genre: PropTypes.string,
   }),
   onClickTitle: PropTypes.func,

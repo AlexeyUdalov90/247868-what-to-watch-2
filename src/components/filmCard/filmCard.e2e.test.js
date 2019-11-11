@@ -9,11 +9,8 @@ Enzyme.configure({adapter: new Adapter()});
 it(`Click on title`, () => {
   const moсks = {
     name: ``,
-    imageUrl: ``,
-    video: {
-      url: ``,
-      type: ``,
-    },
+    previewImage: ``,
+    previewVideoLink: ``,
   };
   const clickHandler = jest.fn();
   const filmCard = shallow(<FilmCard film={moсks} onClickTitle={clickHandler} onMouseEnterFilm={jest.fn()} onMouseLeaveFilm={jest.fn()} />);
@@ -26,11 +23,8 @@ it(`Click on title`, () => {
 it(`Mouse enter on film card`, () => {
   const moсks = {
     name: ``,
-    imageUrl: ``,
-    video: {
-      url: ``,
-      type: ``,
-    },
+    previewImage: ``,
+    previewVideoLink: ``,
   };
   const mouseEnterHandler = jest.fn();
   shallow(<FilmCard film={moсks} onClickTitle={jest.fn()} isPlaying={false} onMouseEnterFilm={mouseEnterHandler} onMouseLeaveFilm={jest.fn()} />)
