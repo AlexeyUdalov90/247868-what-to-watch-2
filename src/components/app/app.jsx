@@ -6,14 +6,14 @@ import {ActionCreator, filterFilms} from '../../reducer.js';
 import Main from '../main/main.jsx';
 import DetailPage from '../detailPage/detailPage.jsx';
 
-const App = ({films, onClickTitle, onChangeFilter, genreActive}) => {
-  return <React.Fragment>{getPageScreen(films, onClickTitle, onChangeFilter, genreActive)}</React.Fragment>;
+const App = ({films, onClickTitle, onChangeFilter}) => {
+  return <React.Fragment>{getPageScreen(films, onClickTitle, onChangeFilter)}</React.Fragment>;
 };
 
-const getPageScreen = (films, onClickTitle, onChangeFilter, genreActive) => {
+const getPageScreen = (films, onClickTitle, onChangeFilter) => {
   switch (location.pathname) {
     case `/`:
-      return <Main films={films} onClickTitle={onClickTitle} onChangeFilter={onChangeFilter} genreActive={genreActive} />;
+      return <Main films={films} onClickTitle={onClickTitle} onChangeFilter={onChangeFilter} />;
     case `/detail`:
       return <DetailPage film={films[0]} />;
   }
@@ -21,14 +21,12 @@ const getPageScreen = (films, onClickTitle, onChangeFilter, genreActive) => {
 };
 
 App.propTypes = {
-  genreActive: PropTypes.string.isRequired,
   films: PropTypes.arrayOf(PropTypes.object).isRequired,
   onClickTitle: PropTypes.func,
   onChangeFilter: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  genreActive: state.genreActive,
   films: filterFilms(state.films, state.genreActive),
 });
 
