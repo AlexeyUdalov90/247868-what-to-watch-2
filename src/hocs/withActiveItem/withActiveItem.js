@@ -1,5 +1,4 @@
 import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
 
 const withActiveItem = (Component) => {
   class WithActiveItem extends PureComponent {
@@ -28,9 +27,7 @@ const withActiveItem = (Component) => {
     }
   }
 
-  WithActiveItem.propTypes = {
-    films: PropTypes.arrayOf(PropTypes.object).isRequired,
-  };
+  WithActiveItem.propTypes = {};
 
   return WithActiveItem;
 };

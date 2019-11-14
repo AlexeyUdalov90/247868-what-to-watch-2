@@ -2,6 +2,12 @@ import films from './moks/films.js';
 
 const actionTypeChangeGenre = `CHANGE_GENRE`;
 
+const getGenresList = (filmsList) => {
+  const genresList = new Set();
+  filmsList.forEach((film) => genresList.add(film.genre));
+  return Array.from(genresList).sort();
+};
+
 const filterFilms = (filmList, genre) => {
   if (genre === `All genres`) {
     return filmList;
@@ -12,6 +18,7 @@ const filterFilms = (filmList, genre) => {
 const initialState = {
   genreActive: `All genres`,
   films,
+  genres: getGenresList(films),
 };
 
 const ActionCreator = {

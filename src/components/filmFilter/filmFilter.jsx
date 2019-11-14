@@ -28,7 +28,7 @@ const FilmFilter = ({activeItem, genres, onChangeActiveItem, onChangeFilter}) =>
 
 FilmFilter.propTypes = {
   activeItem: PropTypes.number.isRequired,
-  genres: PropTypes.array.isRequired,
+  genres: PropTypes.arrayOf(PropTypes.string).isRequired,
   onChangeActiveItem: PropTypes.func.isRequired,
   onChangeFilter: PropTypes.func.isRequired,
 };

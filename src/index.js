@@ -4,7 +4,6 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 
 import App from './components/app/app.jsx';
-import films from './moks/films.js';
 import {reducer} from './reducer.js';
 
 const titleClickHandler = function () {
@@ -15,7 +14,7 @@ const init = () => {
   const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
   ReactDom.render(<Provider store={store}>
-    <App films={films} onClickTitle={titleClickHandler} />
+    <App onClickTitle={titleClickHandler} />
   </Provider>, document.querySelector(`#root`));
 };
 
