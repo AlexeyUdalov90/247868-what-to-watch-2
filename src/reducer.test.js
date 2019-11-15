@@ -1,9 +1,7 @@
 import {reducer, ActionCreator, filterFilms} from './reducer.js';
 
-import films from './moks/films.js';
-
 it(`Filter films works correctly`, () => {
-  expect(filterFilms(films, `Horror`)).toMatchObject([{
+  expect(filterFilms([{genre: `Comedy`}, {genre: `Horror`}, {genre: `Drama`}], `Horror`)).toMatchObject([{
     genre: `Horror`,
   }]);
 });
@@ -19,22 +17,29 @@ describe(`Action creator works correctly`, () => {
 
 describe(`Reducer works correctly`, () => {
   it(`Reducer without additional parameters should return initial state`, () => {
-    expect(reducer(undefined, {})).toEqual({
+    expect(reducer({
       genreActive: `All genres`,
-      films,
+      films: [],
+      genres: [],
+    }, {})).toEqual({
+      genreActive: `All genres`,
+      films: [],
+      genres: [],
     });
   });
 
   it(`Reducer should change genre by a given value`, () => {
     expect(reducer({
       genreActive: `All genres`,
-      films,
+      films: [],
+      genres: []
     }, {
       type: `CHANGE_GENRE`,
       payload: `Comedy`,
     })).toEqual({
       genreActive: `Comedy`,
-      films,
+      films: [],
+      genres: [],
     });
   });
 });

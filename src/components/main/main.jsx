@@ -4,7 +4,12 @@ import PropTypes from 'prop-types';
 import FilmFilter from '../filmFilter/filmFilter.jsx';
 import FilmList from '../filmList/filmList.jsx';
 
-const Main = ({films, onClickTitle, onChangeFilter, genreActive}) => {
+import withActiveItem from '../../hocs/withActiveItem/withActiveItem.js';
+
+const FilmListWrapped = withActiveItem(FilmList);
+const FilmFilterWrapped = withActiveItem(FilmFilter);
+
+const Main = ({films, onClickTitle, onChangeFilter, genres}) => {
   return <div>
     <section className="movie-card">
       <div className="movie-card__bg">
@@ -64,9 +69,9 @@ const Main = ({films, onClickTitle, onChangeFilter, genreActive}) => {
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-        <FilmFilter films={films} genreActive={genreActive} onChangeFilter={onChangeFilter} />
+        <FilmFilterWrapped genres={genres} onChangeFilter={onChangeFilter} />
 
-        <FilmList films={films} onClickTitle={onClickTitle} />
+        <FilmListWrapped films={films} onClickTitle={onClickTitle} />
 
         <div className="catalog__more">
           <button className="catalog__button" type="button">Show more</button>
@@ -92,7 +97,7 @@ const Main = ({films, onClickTitle, onChangeFilter, genreActive}) => {
 
 Main.propTypes = {
   films: PropTypes.arrayOf(PropTypes.object).isRequired,
-  genreActive: PropTypes.string.isRequired,
+  genres: PropTypes.arrayOf(PropTypes.string).isRequired,
   onClickTitle: PropTypes.func,
   onChangeFilter: PropTypes.func.isRequired,
 };

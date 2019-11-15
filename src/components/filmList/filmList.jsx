@@ -1,40 +1,21 @@
-import React, {PureComponent} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import FilmCard from '../filmCard/filmCard.jsx';
 
-class FilmList extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      currentFilm: -1,
-    };
-  }
-  _mouseEnterFilmHandler(film) {
-    this.setState({
-      currentFilm: film,
-    });
-  }
-  _mouseLeaveFilmHandler() {
-    this.setState({
-      currentFilm: -1,
-    });
-  }
-  render() {
-    return (
-      <div className="catalog__movies-list">
-        {this.props.films.map((film, i) => {
-          return <FilmCard film={film} isPlaying={i === this.state.currentFilm} onClickTitle={this.props.onClickTitle} onMouseEnterFilm={this._mouseEnterFilmHandler.bind(this, i)} onMouseLeaveFilm={this._mouseLeaveFilmHandler.bind(this)} key={film.id} />;
-        })}
-      </div>
-    );
-  }
-}
+const FilmList = ({films, onClickTitle, activeItem, onChangeActiveItem}) => {
+  return <div className="catalog__movies-list">
+    {films.map((film, i) => {
+      return <FilmCard film={film} isPlaying={i === activeItem} onClickTitle={onClickTitle} onMouseEnterFilm={onChangeActiveItem} key={film.id} />;
+    })}
+  </div>;
+};
 
 FilmList.propTypes = {
   films: PropTypes.arrayOf(PropTypes.object).isRequired,
+  activeItem: PropTypes.number.isRequired,
   onClickTitle: PropTypes.func,
+  onChangeActiveItem: PropTypes.func.isRequired,
 };
 
 export default FilmList;

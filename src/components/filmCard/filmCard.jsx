@@ -17,7 +17,7 @@ class FilmCard extends PureComponent {
     this._mouseLeaveFilmHandler = this._mouseLeaveFilmHandler.bind(this);
   }
   _mouseEnterFilmHandler() {
-    this.props.onMouseEnterFilm();
+    this.props.onMouseEnterFilm(this.props.film.id);
     this._timerId = setTimeout(() => {
       this.setState((prevState) => ({
         isPlaying: !prevState.isPlaying,
@@ -25,7 +25,6 @@ class FilmCard extends PureComponent {
     }, 1000);
   }
   _mouseLeaveFilmHandler() {
-    this.props.onMouseLeaveFilm();
     if (this.state.isPlaying) {
       this.setState((prevState) => ({
         isPlaying: !prevState.isPlaying,
