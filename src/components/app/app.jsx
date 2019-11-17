@@ -2,7 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
-import {ActionCreator, filterFilms} from '../../reducer.js';
+import getVisibleFilms from '../../selectors/getVisibleFilms.js';
+import {changeGenre} from '../../redusers/actionCreator.js';
 import Main from '../main/main.jsx';
 import DetailPage from '../detailPage/detailPage.jsx';
 
@@ -28,14 +29,14 @@ App.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  films: filterFilms(state.films, state.genreActive),
-  genres: state.genres,
+  films: getVisibleFilms(state),
+  genres: state.load.genres,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onChangeFilter: (genre) => {
-      dispatch(ActionCreator.changeGenre(genre));
+      dispatch(changeGenre(genre));
     },
   };
 };
