@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux';
 import user from './user/user.js';
 import load from './load/load.js';
-import {loadFilms, getGenres, requireAuthorization} from './actionCreator.js';
+import {loadFilms, getGenres, saveUserData} from './actionCreator.js';
 
 const reducer = combineReducers({user, load});
 
@@ -13,10 +13,20 @@ const Operation = {
         dispatch(getGenres(response.data));
       });
   },
+  authorization: (email, password) => (dispatch, _, api) => {
+    return api.post(`/login`, {email, password})
+      .then((response) => {
+        if (!response.hasOwnProperty(`isAxiosError`)) {
+          dispatch(saveUserData(response.data));
+        }
+      });
+  },
   checkAuth: () => (dispatch, _, api) => {
     return api.get(`/login`)
       .then((response) => {
-        dispatch(requireAuthorization(response.data));
+        if (!response.hasOwnProperty(`isAxiosError`)) {
+          dispatch(saveUserData(response.data));
+        }
       });
   }
 };
