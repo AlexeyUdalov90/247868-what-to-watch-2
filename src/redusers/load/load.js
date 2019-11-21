@@ -3,7 +3,10 @@ import {ActionType} from '../actionCreator.js';
 const initialState = {
   films: [],
   genres: [],
-  requireAuthorization: false,
+  userData: {
+    avatarUrl: ``,
+  },
+  isAuthorizationRequired: false,
 };
 
 const load = (state = initialState, action) => {
@@ -18,7 +21,11 @@ const load = (state = initialState, action) => {
       });
     case ActionType.REQUIRE_AUTH:
       return Object.assign({}, state, {
-        requireAuthorization: action.payload,
+        isAuthorizationRequired: action.payload,
+      });
+    case ActionType.SAVE_USER_DATA:
+      return Object.assign({}, state, {
+        userData: action.payload,
       });
   }
   return state;

@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 
 import FilmFilter from '../filmFilter/filmFilter.jsx';
 import FilmList from '../filmList/filmList.jsx';
+import Header from '../header/header.jsx';
 
 import withActiveItem from '../../hocs/withActiveItem/withActiveItem.js';
 
 const FilmListWrapped = withActiveItem(FilmList);
 const FilmFilterWrapped = withActiveItem(FilmFilter);
 
-const Main = ({films, onClickTitle, onChangeFilter, genres}) => {
+const Main = ({films, onClickTitle, onChangeFilter, genres, isAuthorizationRequired, avatarUrl}) => {
   return <div>
     <section className="movie-card">
       <div className="movie-card__bg">
@@ -18,21 +19,7 @@ const Main = ({films, onClickTitle, onChangeFilter, genres}) => {
 
       <h1 className="visually-hidden">WTW</h1>
 
-      <header className="page-header movie-card__head">
-        <div className="logo">
-          <a className="logo__link">
-            <span className="logo__letter logo__letter--1">W</span>
-            <span className="logo__letter logo__letter--2">T</span>
-            <span className="logo__letter logo__letter--3">W</span>
-          </a>
-        </div>
-
-        <div className="user-block">
-          <div className="user-block__avatar">
-            <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-          </div>
-        </div>
-      </header>
+      <Header isAuthorizationRequired={isAuthorizationRequired} avatarUrl={avatarUrl} />
 
       <div className="movie-card__wrap">
         <div className="movie-card__info">
@@ -100,6 +87,8 @@ Main.propTypes = {
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
   onClickTitle: PropTypes.func,
   onChangeFilter: PropTypes.func.isRequired,
+  isAuthorizationRequired: PropTypes.bool.isRequired,
+  avatarUrl: PropTypes.string.isRequired,
 };
 
 export default Main;

@@ -4,22 +4,20 @@ const getGenresList = (filmsList) => {
   return Array.from(genresList).sort();
 };
 
-const getCorrectPropName = (filmList) => {
-  return filmList.map((film) => {
-    for (let key in film) {
-      if (key.includes(`_`)) {
-        let newKey = key.split(`_`).map((item, i) => {
-          if (i > 0) {
-            return item[0].toUpperCase() + item.slice(1);
-          }
-          return item;
-        }).join(``);
-        film[newKey] = film[key];
-        delete film[key];
-      }
+const getCorrectPropName = (data) => {
+  for (let key in data) {
+    if (key.includes(`_`)) {
+      let newKey = key.split(`_`).map((item, i) => {
+        if (i > 0) {
+          return item[0].toUpperCase() + item.slice(1);
+        }
+        return item;
+      }).join(``);
+      data[newKey] = data[key];
+      delete data[key];
     }
-    return film;
-  });
+  }
+  return data;
 };
 
 const ActionType = {
@@ -27,6 +25,7 @@ const ActionType = {
   LOAD_FILMS: `LOAD_FILMS`,
   GET_GENRES: `GET_GENRES`,
   REQUIRE_AUTH: `REQUIRE_AUTH`,
+  SAVE_USER_DATA: `SAVE_USER_DATA`,
 };
 
 const changeGenre = (genre) => ({
@@ -36,7 +35,7 @@ const changeGenre = (genre) => ({
 
 const loadFilms = (films) => ({
   type: ActionType.LOAD_FILMS,
-  payload: getCorrectPropName(films),
+  payload: films.map((film) => getCorrectPropName(film)),
 });
 
 const getGenres = (films) => ({
@@ -49,6 +48,11 @@ const requireAuthorization = () => ({
   payload: true,
 });
 
+const saveUserData = (data) => ({
+  type: ActionType.SAVE_USER_DATA,
+  payload: getCorrectPropName(data),
+});
+
 export {
   ActionType,
   changeGenre,
@@ -56,4 +60,5 @@ export {
   getGenres,
   requireAuthorization,
   getGenresList,
+  saveUserData,
 };
