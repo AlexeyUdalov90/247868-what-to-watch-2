@@ -11,7 +11,7 @@ const FilmFilter = ({activeItem, genres, onChangeActiveItem, onChangeFilter}) =>
           onChangeFilter(`All genres`);
         }}>All genres</a>
       </li>
-      {genres.map((genre, i) => {
+      {genres.slice(0, 10).map((genre, i) => {
         return (
           <li className={`catalog__genres-item ${activeItem === i ? `catalog__genres-item--active` : ``}`} key={`${genre}-${i}`}>
             <a href="#" className="catalog__genres-link" onClick={(evt) => {

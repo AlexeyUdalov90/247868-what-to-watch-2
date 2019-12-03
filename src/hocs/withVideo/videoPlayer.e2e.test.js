@@ -1,17 +1,20 @@
 import React from 'react';
-import Enzyme, {mount} from 'enzyme';
+import {configure, mount} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-import VideoPlayer from './videoPlayer.jsx';
+import withVideo from './withVideo.js';
 
-Enzyme.configure({adapter: new Adapter()});
+configure({adapter: new Adapter()});
+
+const MockComponent = () => <div />;
+const MockComponentWrapped = withVideo(MockComponent);
 
 window.HTMLMediaElement.prototype.play = () => { };
 window.HTMLMediaElement.prototype.pause = () => { };
 
 it(`Play video`, () => {
 
-  const video = mount(<VideoPlayer poster={``} video={``} isPlaying={false}/>);
+  const video = mount(<MockComponentWrapped poster={``} video={``} isPlaying={false}/>);
   video.setState({
     isPlaying: true,
   });
@@ -20,7 +23,7 @@ it(`Play video`, () => {
 
 it(`Stop video`, () => {
 
-  const video = mount(<VideoPlayer poster={``} video={``} isPlaying={true}/>);
+  const video = mount(<MockComponentWrapped poster={``} video={``} isPlaying={true}/>);
   video.setState({
     isPlaying: false,
   });

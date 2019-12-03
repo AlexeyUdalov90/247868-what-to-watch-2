@@ -1,7 +1,12 @@
 import React, {PureComponent} from 'react';
+import {Link} from 'react-router-dom';
+import history from '../../history.js';
 import PropTypes from 'prop-types';
 
 import VideoPlayer from '../videoPlayer/videoPlayer.jsx';
+import withVideo from '../../hocs/withVideo/withVideo.js';
+
+const VideoPlayerWrapped = withVideo(VideoPlayer);
 
 class FilmCard extends PureComponent {
   constructor(props) {
@@ -9,45 +14,41 @@ class FilmCard extends PureComponent {
 
     this._timerId = null;
 
-    this.state = {
-      isPlaying: props.isPlaying,
-    };
-
     this._mouseEnterFilmHandler = this._mouseEnterFilmHandler.bind(this);
     this._mouseLeaveFilmHandler = this._mouseLeaveFilmHandler.bind(this);
+    this._onClickHandler = this._onClickHandler.bind(this);
   }
+
+  render() {
+    const {film: {id, name, previewImage, previewVideoLink}, isPlaying} = this.props;
+
+    return (<article className="small-movie-card catalog__movies-card" onMouseEnter={this._mouseEnterFilmHandler} onMouseLeave={this._mouseLeaveFilmHandler} onClick={this._onClickHandler}>
+      <div className="small-movie-card__image">
+        <VideoPlayerWrapped poster={previewImage} previewVideoLink={previewVideoLink} isPlaying={isPlaying} />
+      </div>
+      <h3 className="small-movie-card__title">
+        <Link className="small-movie-card__link" to={`/films/${id}`}>{name}</Link>
+      </h3>
+    </article>);
+  }
+
   _mouseEnterFilmHandler() {
-    this.props.onMouseEnterFilm(this.props.film.id);
+    const {onMouseEnterFilmHandler} = this.props;
     this._timerId = setTimeout(() => {
-      this.setState((prevState) => ({
-        isPlaying: !prevState.isPlaying,
-      }));
+      onMouseEnterFilmHandler();
     }, 1000);
   }
   _mouseLeaveFilmHandler() {
-    if (this.state.isPlaying) {
-      this.setState((prevState) => ({
-        isPlaying: !prevState.isPlaying,
-      }));
+    const {onMouseLeaveFilmHandler, isPlaying} = this.props;
+    if (isPlaying) {
+      onMouseLeaveFilmHandler();
     } else {
       clearTimeout(this._timerId);
     }
   }
-  render() {
-    const {film: {name, previewImage, previewVideoLink}, onClickTitle} = this.props;
-    const {isPlaying} = this.state;
-
-    return (
-      <article className="small-movie-card catalog__movies-card" onMouseEnter= {this._mouseEnterFilmHandler} onMouseLeave={this._mouseLeaveFilmHandler}>
-        <div className="small-movie-card__image">
-          <VideoPlayer poster={previewImage} video={previewVideoLink} isPlaying={isPlaying} />
-          {/* <img src={imageUrl} alt={name} width="280" height="175" /> */}
-        </div>
-        <h3 className="small-movie-card__title" onClick={onClickTitle}>
-          <a className="small-movie-card__link" href="detail">{name}</a>
-        </h3>
-      </article>
-    );
+  _onClickHandler() {
+    const {film: {id}} = this.props;
+    history.push(`/films/${id}`);
   }
 }
 
@@ -57,11 +58,9 @@ FilmCard.propTypes = {
     name: PropTypes.string.isRequired,
     previewImage: PropTypes.string.isRequired,
     previewVideoLink: PropTypes.string.isRequired,
-    genre: PropTypes.string,
   }),
-  onClickTitle: PropTypes.func,
-  onMouseEnterFilm: PropTypes.func,
-  onMouseLeaveFilm: PropTypes.func,
+  onMouseEnterFilmHandler: PropTypes.func,
+  onMouseLeaveFilmHandler: PropTypes.func,
   isPlaying: PropTypes.bool,
 };
 

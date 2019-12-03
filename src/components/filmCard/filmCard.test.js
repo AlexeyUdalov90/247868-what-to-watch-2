@@ -5,11 +5,12 @@ import FilmCard from './filmCard.jsx';
 
 it(`FilmCard correctly renders after relaunch`, () => {
   const moks = {
+    id: 1,
     name: ``,
     previewImage: ``,
     previewVideoLink: ``,
   };
-  const tree = renderer.create(<FilmCard film={moks} onClickTitle={jest.fn()} onMouseEnterFilm={jest.fn()} onMouseLeaveFilm={jest.fn()} />, {
+  const tree = renderer.create(<FilmCard film={moks} isPlaying={false} onMouseEnterFilmHandler={jest.fn()} onMouseLeaveFilmHandler={jest.fn()} />, {
     createNodeMock: (element) => {
       if (element.type === `video`) {
         return {

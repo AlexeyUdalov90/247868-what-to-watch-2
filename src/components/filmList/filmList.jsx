@@ -3,19 +3,22 @@ import PropTypes from 'prop-types';
 
 import FilmCard from '../filmCard/filmCard.jsx';
 
-const FilmList = ({films, onClickTitle, activeItem, onChangeActiveItem}) => {
-  return <div className="catalog__movies-list">
+const FilmList = ({films, activeItem, onChangeActiveItem, filmLoading}) => {
+  if (filmLoading) {
+    return <div></div>;
+  }
+  return <React.Fragment>
     {films.map((film, i) => {
-      return <FilmCard film={film} isPlaying={i === activeItem} onClickTitle={onClickTitle} onMouseEnterFilm={onChangeActiveItem} key={film.id} />;
+      return <FilmCard film={film} isPlaying={i === activeItem} onMouseEnterFilmHandler={() => onChangeActiveItem(i)} onMouseLeaveFilmHandler={() => onChangeActiveItem(-1)} key={film.id} />;
     })}
-  </div>;
+  </React.Fragment>;
 };
 
 FilmList.propTypes = {
-  films: PropTypes.arrayOf(PropTypes.object).isRequired,
+  films: PropTypes.arrayOf(PropTypes.object),
   activeItem: PropTypes.number.isRequired,
-  onClickTitle: PropTypes.func,
   onChangeActiveItem: PropTypes.func.isRequired,
+  filmLoading: PropTypes.bool.isRequired,
 };
 
 export default FilmList;

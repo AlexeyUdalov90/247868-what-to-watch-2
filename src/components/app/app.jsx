@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import {Switch, Route} from 'react-router-dom';
 
-import getVisibleFilms from '../../selectors/getVisibleFilms.js';
-import {changeGenre} from '../../redusers/actionCreator.js';
+
+import {changeGenre, loadFilms, loadPromoFilm} from '../../redusers/actionCreator.js';
 import {Operation} from '../../redusers/reducer.js';
 import Main from '../main/main.jsx';
 import DetailPage from '../detailPage/detailPage.jsx';
@@ -13,39 +14,34 @@ import withAuthForm from '../../hocs/withAuthForm/withAuthForm.js';
 
 const SignInWrapped = withAuthForm(SignIn);
 
-const App = ({films, onClickTitle, onChangeFilter, genres, isAuthorizationRequired, onSubmitSignIn, avatarUrl}) => {
-  return <React.Fragment>{getPageScreen(films, onClickTitle, onChangeFilter, genres, isAuthorizationRequired, onSubmitSignIn, avatarUrl)}</React.Fragment>;
-};
-
-const getPageScreen = (films, onClickTitle, onChangeFilter, genres, isAuthorizationRequired, onSubmitSignIn, avatarUrl) => {
-  if (isAuthorizationRequired) {
-    return <SignInWrapped onSubmitSignIn={onSubmitSignIn} />;
-  } else {
-    switch (location.pathname) {
-      case `/`:
-        return <Main films={films} onClickTitle={onClickTitle} onChangeFilter={onChangeFilter} genres={genres} isAuthorizationRequired={isAuthorizationRequired} avatarUrl={avatarUrl} />;
-      case `/detail`:
-        return <DetailPage film={films[0]} />;
-    }
+class App extends Component {
+  componentDidMount() {
+    this.props.loadFilms();
+    this.props.loadPromoFilm();
   }
-  return null;
-};
+  render() {
+    const {onChangeFilter, genres, onSubmitSignIn} = this.props;
+
+    return <Switch>
+      <Route path='/' exact render={() => {
+        return <Main onChangeFilter={onChangeFilter} genres={genres} />;
+      }} />
+      <Route path='/login' exact render={() => <SignInWrapped onSubmitSignIn={onSubmitSignIn} />} />
+      <Route path='/films/:id' exact component={DetailPage} />
+    </Switch>;
+  }
+}
 
 App.propTypes = {
-  films: PropTypes.arrayOf(PropTypes.object).isRequired,
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onClickTitle: PropTypes.func,
   onChangeFilter: PropTypes.func.isRequired,
-  isAuthorizationRequired: PropTypes.bool.isRequired,
   onSubmitSignIn: PropTypes.func.isRequired,
-  avatarUrl: PropTypes.string.isRequired,
+  loadFilms: PropTypes.func.isRequired,
+  loadPromoFilm: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  films: getVisibleFilms(state),
   genres: state.load.genres,
-  isAuthorizationRequired: state.load.isAuthorizationRequired,
-  avatarUrl: state.load.userData.avatarUrl,
 });
 
 const mapDispatchToProps = (dispatch) => {
@@ -55,7 +51,13 @@ const mapDispatchToProps = (dispatch) => {
     },
     onSubmitSignIn: (email, password) => {
       dispatch(Operation.authorization(email, password));
-    }
+    },
+    loadFilms: () => {
+      dispatch(loadFilms());
+    },
+    loadPromoFilm: () => {
+      dispatch(loadPromoFilm());
+    },
   };
 };
 
