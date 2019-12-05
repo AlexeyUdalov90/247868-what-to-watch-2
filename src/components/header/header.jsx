@@ -1,9 +1,10 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const getUserIdentification = (isAuthorizationRequired, avatarUrl) => {
   if (isAuthorizationRequired) {
-    return <a href="sign-in.html" className="user-block__link">Sign in</a>;
+    return <Link to="/login" className="user-block__link">Sign in</Link>;
   }
 
   return <div className="user-block__avatar">
@@ -14,11 +15,11 @@ const getUserIdentification = (isAuthorizationRequired, avatarUrl) => {
 const Header = ({isAuthorizationRequired, avatarUrl}) => {
   return <header className="page-header movie-card__head">
     <div className="logo">
-      <a className="logo__link">
+      <Link to="/" className="logo__link">
         <span className="logo__letter logo__letter--1">W</span>
         <span className="logo__letter logo__letter--2">T</span>
         <span className="logo__letter logo__letter--3">W</span>
-      </a>
+      </Link>
     </div>
 
     <div className="user-block">

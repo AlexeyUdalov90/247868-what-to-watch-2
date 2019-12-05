@@ -1,7 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`FilmList correctly renders after relaunch 1`] = `
-<div
-  className="catalog__movies-list"
-/>
-`;
+exports[`FilmList correctly renders after relaunch 1`] = `null`;

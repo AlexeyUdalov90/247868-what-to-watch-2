@@ -4,17 +4,17 @@ import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import {compose} from 'recompose';
+import {Router} from 'react-router-dom';
 
 import App from './components/app/app.jsx';
 import {reducer, Operation} from './redusers/reducer.js';
 import createAPI from './api.js';
-
-const titleClickHandler = function () {
-
-};
+import history from './history.js';
 
 const init = () => {
-  const api = createAPI((...args) => store.dispatch(...args));
+  const api = createAPI(() => {
+    history.push(`/login`);
+  });
   const store = createStore(
       reducer,
       compose(
@@ -24,10 +24,11 @@ const init = () => {
   );
 
   store.dispatch(Operation.checkAuth());
-  store.dispatch(Operation.loadFilms());
 
   ReactDom.render(<Provider store={store}>
-    <App onClickTitle={titleClickHandler} />
+    <Router history={history}>
+      <App />
+    </Router>
   </Provider>, document.querySelector(`#root`));
 };
 

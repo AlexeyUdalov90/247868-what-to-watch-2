@@ -3,6 +3,7 @@
 exports[`FilmCard correctly renders after relaunch 1`] = `
 <article
   className="small-movie-card catalog__movies-card"
+  onClick={[Function]}
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
 >
@@ -17,11 +18,11 @@ exports[`FilmCard correctly renders after relaunch 1`] = `
   </div>
   <h3
     className="small-movie-card__title"
-    onClick={[MockFunction]}
   >
     <a
       className="small-movie-card__link"
-      href="detail"
+      href="/films/1"
+      onClick={[Function]}
     >
       
     </a>
