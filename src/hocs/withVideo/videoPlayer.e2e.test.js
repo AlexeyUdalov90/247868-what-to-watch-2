@@ -6,7 +6,7 @@ import withVideo from './withVideo.js';
 
 configure({adapter: new Adapter()});
 
-const MockComponent = () => <div />;
+const MockComponent = () => <video />;
 const MockComponentWrapped = withVideo(MockComponent);
 
 window.HTMLMediaElement.prototype.play = () => { };
@@ -14,7 +14,7 @@ window.HTMLMediaElement.prototype.pause = () => { };
 
 it(`Play video`, () => {
 
-  const video = mount(<MockComponentWrapped poster={``} video={``} isPlaying={false}/>);
+  const video = mount(<MockComponentWrapped poster={``} previewVideoLink={``} isPlaying={false}/>);
   video.setState({
     isPlaying: true,
   });
@@ -23,7 +23,7 @@ it(`Play video`, () => {
 
 it(`Stop video`, () => {
 
-  const video = mount(<MockComponentWrapped poster={``} video={``} isPlaying={true}/>);
+  const video = mount(<MockComponentWrapped poster={``} previewVideoLink={``} isPlaying={true}/>);
   video.setState({
     isPlaying: false,
   });

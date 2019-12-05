@@ -1,6 +1,6 @@
 import MockAdapter from 'axios-mock-adapter';
 import createAPI from '../api.js';
-import {ActionType, changeGenre, getGenresList, loadFilms, getGenres, requireAuthorization, saveUserData} from './actionCreator.js';
+import {ActionType, changeGenre, setFilms, getGenres, requireAuthorization, saveUserData, setPromoFilm, setReviews} from './actionCreator.js';
 import {reducer, Operation} from './reducer.js';
 
 describe(`Action creator works correctly`, () => {
@@ -10,9 +10,9 @@ describe(`Action creator works correctly`, () => {
       payload: `Comedy`,
     });
   });
-  it(`Action creator for load films returns correct action`, () => {
-    expect(loadFilms([])).toEqual({
-      type: ActionType.LOAD_FILMS,
+  it(`Action creator for set films returns correct action`, () => {
+    expect(setFilms([])).toEqual({
+      type: ActionType.SET_FILMS,
       payload: [],
     });
   });
@@ -23,7 +23,7 @@ describe(`Action creator works correctly`, () => {
     });
   });
   it(`Action creator for require authorization returns correct action`, () => {
-    expect(requireAuthorization()).toEqual({
+    expect(requireAuthorization(true)).toEqual({
       type: ActionType.REQUIRE_AUTH,
       payload: true,
     });
@@ -34,6 +34,30 @@ describe(`Action creator works correctly`, () => {
       payload: {},
     });
   });
+  it(`Action creator for set promo film returns correct action`, () => {
+    expect(setPromoFilm({})).toEqual({
+      type: ActionType.SET_PROMO_FILM,
+      payload: {},
+    });
+  });
+  it(`Action creator for set reviews returns correct action`, () => {
+    expect(setReviews({})).toEqual({
+      type: ActionType.SET_REVIEWS,
+      payload: {},
+    });
+  });
+  // it(`Action creator for load films return correct action`, () => {
+  //   const dispatch = jest.fn();
+  //   const api = createAPI(dispatch);
+  //   const apiMock = new MockAdapter(api);
+  //   const filmLoader = loadFilms();
+
+  //   apiMock
+  //     .onget(`/films`)
+  //     .reply(200, {fake: true});
+
+  //   return filmLoader(dispatch, null, api)
+  // });
 });
 
 describe(`Reducer works correctly`, () => {
@@ -80,30 +104,6 @@ describe(`Reducer works correctly`, () => {
     });
   });
 
-  it(`Should make a correct API call to /films`, () => {
-    const dispatch = jest.fn();
-    const api = createAPI(dispatch);
-    const apiMock = new MockAdapter(api);
-    const loaderFilms = Operation.loadFilms();
-
-    apiMock
-      .onGet(`/films`)
-      .reply(200, [{fake: true}]);
-
-    return loaderFilms(dispatch, null, api)
-      .then(() => {
-        expect(dispatch).toHaveBeenCalledTimes(2);
-        expect(dispatch).toHaveBeenNthCalledWith(1, {
-          type: ActionType.LOAD_FILMS,
-          payload: [{fake: true}],
-        });
-        expect(dispatch).toHaveBeenNthCalledWith(2, {
-          type: ActionType.GET_GENRES,
-          payload: getGenresList([{fake: true}]),
-        });
-      });
-  });
-
   it(`Should make a correct API call to /login, for authorization`, () => {
     const dispatch = jest.fn();
     const api = createAPI(dispatch);
@@ -116,10 +116,14 @@ describe(`Reducer works correctly`, () => {
 
     return authorization(dispatch, null, api)
       .then(() => {
-        expect(dispatch).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenCalledTimes(2);
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ActionType.SAVE_USER_DATA,
           payload: {fake: true},
+        });
+        expect(dispatch).toHaveBeenNthCalledWith(2, {
+          type: ActionType.REQUIRE_AUTH,
+          payload: false,
         });
       });
   });
@@ -136,10 +140,14 @@ describe(`Reducer works correctly`, () => {
 
     return checkerAuthorization(dispatch, null, api)
       .then(() => {
-        expect(dispatch).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenCalledTimes(2);
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ActionType.SAVE_USER_DATA,
           payload: {fake: true},
+        });
+        expect(dispatch).toHaveBeenNthCalledWith(2, {
+          type: ActionType.REQUIRE_AUTH,
+          payload: false,
         });
       });
   });

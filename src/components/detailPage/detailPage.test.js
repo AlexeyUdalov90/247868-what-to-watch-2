@@ -1,9 +1,10 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
+import {BrowserRouter as Router} from 'react-router-dom';
 import {DetailPage} from './detailPage.jsx';
 
 it(`DetailPage correctly renders after relaunch`, () => {
-  const tree = renderer.create(<DetailPage
+  const tree = renderer.create(<Router><DetailPage
     film={{
       name: ``,
       posterImage: ``,
@@ -21,7 +22,10 @@ it(`DetailPage correctly renders after relaunch`, () => {
     isAuthorizationRequired={false}
     avatarUrl={``}
     toggleFavoriteFilm={jest.fn()}
-  />).toJSON();
+    reviewsLoading={false}
+    loadReviews={jest.fn()}
+    reviews={[]}
+  /></Router>).toJSON();
 
   expect(tree).toMatchSnapshot();
 });

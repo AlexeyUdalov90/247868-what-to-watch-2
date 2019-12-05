@@ -1,4 +1,5 @@
 import React from 'react';
+import {BrowserRouter as Router} from 'react-router-dom';
 import renderer from 'react-test-renderer';
 
 import FilmCard from './filmCard.jsx';
@@ -10,7 +11,7 @@ it(`FilmCard correctly renders after relaunch`, () => {
     previewImage: ``,
     previewVideoLink: ``,
   };
-  const tree = renderer.create(<FilmCard film={moks} isPlaying={false} onMouseEnterFilmHandler={jest.fn()} onMouseLeaveFilmHandler={jest.fn()} />, {
+  const tree = renderer.create(<Router><FilmCard film={moks} isPlaying={false} onMouseEnterFilmHandler={jest.fn()} onMouseLeaveFilmHandler={jest.fn()} /></Router>, {
     createNodeMock: (element) => {
       if (element.type === `video`) {
         return {

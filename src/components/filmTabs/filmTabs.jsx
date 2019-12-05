@@ -120,7 +120,7 @@ const FilmTabs = ({activeTab, onChangeActiveTab, film, reviews, reviewsLoading})
 };
 
 FilmTabs.propTypes = {
-  activeTab: PropTypes.bool.isRequired,
+  activeTab: PropTypes.number.isRequired,
   onChangeActiveTab: PropTypes.func.isRequired,
   film: PropTypes.object.isRequired,
   reviews: PropTypes.array.isRequired,

@@ -177,4 +177,7 @@ export {
   loadPromoFilm,
   getDate,
   loadReviews,
+  setReviews,
+  setFilms,
+  setPromoFilm
 };
