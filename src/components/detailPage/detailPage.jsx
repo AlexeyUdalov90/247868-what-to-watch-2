@@ -77,7 +77,7 @@ class DetailPage extends PureComponent {
           <h2 className="catalog__title">More like this</h2>
 
           <div className="catalog__movies-list">
-            <FilmListWrapped films={moreLikeFilms} filmLoading={filmLoading} />
+            <FilmListWrapped films={moreLikeFilms} filmLoading={filmLoading} showItems={4} />
           </div>
         </section>
 

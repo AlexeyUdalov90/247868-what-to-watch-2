@@ -2,7 +2,16 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const SignIn = ({emailValue, passwordValue, onChangeEmailHandler, onChangePasswordHandler, onSubmitSignIn}) => {
+const showErrorEmail = (isInvalidEmail) => {
+  if (isInvalidEmail) {
+    return <div className="sign-in__message">
+      <p>Please enter a valid email address</p>
+    </div>;
+  }
+  return null;
+};
+
+const SignIn = ({emailValue, passwordValue, isInvalidEmail, onChangeEmailHandler, onChangePasswordHandler, onSubmitSignIn, onValidEmail}) => {
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
@@ -19,9 +28,10 @@ const SignIn = ({emailValue, passwordValue, onChangeEmailHandler, onChangePasswo
 
       <div className="sign-in user-page__content">
         <form action="#" className="sign-in__form" onSubmit={onSubmitSignIn}>
+          {showErrorEmail(isInvalidEmail)}
           <div className="sign-in__fields">
-            <div className="sign-in__field">
-              <input className="sign-in__input" type="email" placeholder="Email address" name="user-email" id="user-email" value={emailValue} onChange={onChangeEmailHandler} />
+            <div className={`sign-in__field ${isInvalidEmail ? `sign-in__field--error` : ``}`}>
+              <input className="sign-in__input" type="email" placeholder="Email address" name="user-email" id="user-email" value={emailValue} onChange={onChangeEmailHandler} onBlur={onValidEmail} />
               <label className="sign-in__label visually-hidden" htmlFor="user-email">Email address</label>
             </div>
             <div className="sign-in__field">
@@ -58,6 +68,8 @@ SignIn.propTypes = {
   onChangeEmailHandler: PropTypes.func.isRequired,
   onChangePasswordHandler: PropTypes.func.isRequired,
   onSubmitSignIn: PropTypes.func.isRequired,
+  isInvalidEmail: PropTypes.bool,
+  onValidEmail: PropTypes.func,
 };
 
 export default SignIn;

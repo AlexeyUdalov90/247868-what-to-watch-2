@@ -9,7 +9,7 @@ Enzyme.configure({adapter: new Adapter()});
 
 jest.useFakeTimers();
 
-it(`Mouse enter on film card`, () => {
+it(`Mouseenter on film card`, () => {
   const moсks = {
     name: ``,
     previewImage: ``,
@@ -23,4 +23,18 @@ it(`Mouse enter on film card`, () => {
   jest.runAllTimers();
 
   expect(mouseEnterHandler).toHaveBeenCalled();
+});
+
+it(`Mouseleave on film card`, () => {
+  const moсks = {
+    name: ``,
+    previewImage: ``,
+    previewVideoLink: ``,
+  };
+  const mouseLeaveHandler = jest.fn();
+  mount(<MemoryRouter><FilmCard film={moсks} onClick={jest.fn()} isPlaying={true} onMouseEnterFilmHandler={jest.fn()} onMouseLeaveFilmHandler={mouseLeaveHandler} /></MemoryRouter>)
+    .find(`.small-movie-card`)
+    .simulate(`mouseleave`);
+
+  expect(mouseLeaveHandler).toHaveBeenCalled();
 });

@@ -10,6 +10,9 @@ it(`Main correctly renders after relaunch`, () => {
     onChangeFilter={jest.fn()}
     genres={[]}
     filmLoading={false}
+    showItems={8}
+    incrementShowItems={jest.fn()}
+    resetShowItems={jest.fn()}
   />).toJSON();
 
   expect(tree).toMatchSnapshot();

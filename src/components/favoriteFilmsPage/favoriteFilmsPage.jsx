@@ -25,7 +25,7 @@ class FavoriteFilmsPage extends PureComponent {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
           <div className="catalog__movies-list">
-            <FilmListWrapped films={favoriteFilms} filmLoading={favoriteFilmsLoading} />
+            <FilmListWrapped films={favoriteFilms} filmLoading={favoriteFilmsLoading} showItems={favoriteFilms.length} />
           </div>
         </section>
         <footer className="page-footer">

@@ -14,7 +14,9 @@ import ReviewPage from '../reviewPage/reviewPage.jsx';
 
 import withAuthForm from '../../hocs/withAuthForm/withAuthForm.js';
 import withAuth from '../../hocs/withAuth/withAuth.js';
+import withShowMoreButton from '../../hocs/withShowMorebutton/withShowMoreButton.js';
 
+const MainWrapped = withShowMoreButton(Main);
 const SignInWrapped = withAuthForm(SignIn);
 
 class App extends PureComponent {
@@ -25,7 +27,7 @@ class App extends PureComponent {
   render() {
     const {onSubmitSignIn} = this.props;
     return <Switch>
-      <Route path='/' exact component={Main} />
+      <Route path='/' exact component={MainWrapped} />
       <Route path='/login' exact render={() => <SignInWrapped onSubmitSignIn={onSubmitSignIn} />} />
       <Route path='/films/:id' exact component={withRouter(DetailPage)} />
       <Route path='/mylist' exact component={withAuth(FavoriteFilmsPage)} />

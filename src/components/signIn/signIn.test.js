@@ -10,6 +10,8 @@ it(`SignIn correctly renders after relaunch`, () => {
     onChangeEmailHandler={jest.fn()}
     onChangePasswordHandler={jest.fn()}
     onSubmitSignIn={jest.fn()}
+    isInvalidEmail={false}
+    onValidEmail={jest.fn()}
   /></Router>).toJSON();
 
   expect(tree).toMatchSnapshot();

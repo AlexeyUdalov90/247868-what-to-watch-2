@@ -13,21 +13,29 @@ import getVisibleFilms from '../../selectors/getVisibleFilms.js';
 const FilmListWrapped = withActiveItem(FilmList);
 const FilmFilterWrapped = withActiveItem(FilmFilter);
 
-const Main = ({onChangeFilter, genres, filmLoading, films}) => {
+const getShowMoreButton = (filmsLength, showFilms, incrementShowItems) => {
+  if (filmsLength > showFilms) {
+    return <div className="catalog__more">
+      <button className="catalog__button" type="button" onClick={incrementShowItems}>Show more</button>
+    </div>;
+  }
+  return null;
+};
+
+const Main = ({onChangeFilter, genres, filmLoading, films, showItems, incrementShowItems, resetShowItems}) => {
   return <div>
     <PromoFilm />
     <div className="page-content">
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-        <FilmFilterWrapped genres={genres} onChangeFilter={onChangeFilter} />
+        <FilmFilterWrapped genres={genres} onChangeFilter={onChangeFilter} resetFilmList={resetShowItems} />
         <div className="catalog__movies-list">
-          <FilmListWrapped films={films} filmLoading={filmLoading} />
+          <FilmListWrapped films={films} filmLoading={filmLoading} showItems={showItems}/>
         </div>
 
-        <div className="catalog__more">
-          <button className="catalog__button" type="button">Show more</button>
-        </div>
+        {getShowMoreButton(films.length, showItems, incrementShowItems)}
+
       </section>
 
       <footer className="page-footer">
@@ -52,6 +60,9 @@ Main.propTypes = {
   onChangeFilter: PropTypes.func.isRequired,
   filmLoading: PropTypes.bool,
   films: PropTypes.array,
+  showItems: PropTypes.number,
+  incrementShowItems: PropTypes.func,
+  resetShowItems: PropTypes.func,
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {

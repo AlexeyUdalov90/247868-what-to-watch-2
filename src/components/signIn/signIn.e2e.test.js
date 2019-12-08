@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router} from 'react-router-dom';
+import {MemoryRouter} from 'react-router-dom';
 import Enzyme, {mount} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
@@ -10,15 +10,15 @@ Enzyme.configure({adapter: new Adapter()});
 describe(`SignIn works correctly`, () => {
   it(`Change email`, () => {
     const changeEmailrHandler = jest.fn();
-    const changePasswordHandler = jest.fn();
-    const submitFormHandler = jest.fn();
-    const signIn = mount(<Router><SignIn
+    const signIn = mount(<MemoryRouter><SignIn
       emailValue={``}
       passwordValue={``}
       onChangeEmailHandler={changeEmailrHandler}
-      onChangePasswordHandler={changePasswordHandler}
-      onSubmitSignIn={submitFormHandler}
-    /></Router>);
+      onChangePasswordHandler={jest.fn()}
+      onSubmitSignIn={jest.fn()}
+      isInvalidEmail={false}
+      onValidEmail={jest.fn()}
+    /></MemoryRouter>);
 
     const emailInput = signIn.find(`input[type="email"]`);
     emailInput.simulate(`change`);
@@ -26,17 +26,35 @@ describe(`SignIn works correctly`, () => {
     expect(changeEmailrHandler).toHaveBeenCalled();
   });
 
-  it(`Change password`, () => {
-    const changeEmailrHandler = jest.fn();
-    const changePasswordHandler = jest.fn();
-    const submitFormHandler = jest.fn();
-    const signIn = mount(<Router><SignIn
+  it(`Validation email`, () => {
+    const onValidEmail = jest.fn();
+    const signIn = mount(<MemoryRouter><SignIn
       emailValue={``}
       passwordValue={``}
-      onChangeEmailHandler={changeEmailrHandler}
+      onChangeEmailHandler={jest.fn()}
+      onChangePasswordHandler={jest.fn()}
+      onSubmitSignIn={jest.fn()}
+      isInvalidEmail={false}
+      onValidEmail={onValidEmail}
+    /></MemoryRouter>);
+
+    const emailInput = signIn.find(`input[type="email"]`);
+    emailInput.simulate(`blur`);
+
+    expect(onValidEmail).toHaveBeenCalled();
+  });
+
+  it(`Change password`, () => {
+    const changePasswordHandler = jest.fn();
+    const signIn = mount(<MemoryRouter><SignIn
+      emailValue={``}
+      passwordValue={``}
+      onChangeEmailHandler={jest.fn()}
       onChangePasswordHandler={changePasswordHandler}
-      onSubmitSignIn={submitFormHandler}
-    /></Router>);
+      onSubmitSignIn={jest.fn()}
+      isInvalidEmail={false}
+      onValidEmail={jest.fn()}
+    /></MemoryRouter>);
 
     const passwordInput = signIn.find(`input[type="password"]`);
     passwordInput.simulate(`change`);
@@ -45,16 +63,16 @@ describe(`SignIn works correctly`, () => {
   });
 
   it(`Submit form`, () => {
-    const changeEmailrHandler = jest.fn();
-    const changePasswordHandler = jest.fn();
     const submitFormHandler = jest.fn();
-    const signIn = mount(<Router><SignIn
+    const signIn = mount(<MemoryRouter><SignIn
       emailValue={`0`}
       passwordValue={`0`}
-      onChangeEmailHandler={changeEmailrHandler}
-      onChangePasswordHandler={changePasswordHandler}
+      onChangeEmailHandler={jest.fn()}
+      onChangePasswordHandler={jest.fn()}
       onSubmitSignIn={submitFormHandler}
-    /></Router>);
+      isInvalidEmail={false}
+      onValidEmail={jest.fn()}
+    /></MemoryRouter>);
 
     const signInForm = signIn.find(`.sign-in__form`);
     signInForm.simulate(`submit`);
