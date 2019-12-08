@@ -16,6 +16,17 @@ const withAuthForm = (Component) => {
       this._onSubmitFormHandler = this._onSubmitFormHandler.bind(this);
     }
 
+    render() {
+      return <Component
+        {...this.props}
+        emailValue = {this.state.email}
+        passwordValue = {this.state.password}
+        onChangeEmailHandler = {this._onChangeEmailHandler}
+        onChangePasswordHandler = {this._onChangePasswordHandler}
+        onSubmitSignIn = {this._onSubmitFormHandler}
+      />;
+    }
+
     _onChangeEmailHandler(evt) {
       this.setState({
         email: evt.target.value,
@@ -36,17 +47,6 @@ const withAuthForm = (Component) => {
       if (email && password) {
         onSubmitSignIn(email, password);
       }
-    }
-
-    render() {
-      return <Component
-        {...this.props}
-        emailValue = {this.state.email}
-        passwordValue = {this.state.password}
-        onChangeEmailHandler = {this._onChangeEmailHandler}
-        onChangePasswordHandler = {this._onChangePasswordHandler}
-        onSubmitSignIn = {this._onSubmitFormHandler}
-      />;
     }
   }
 

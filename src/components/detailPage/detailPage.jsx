@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 
 import {Operation} from '../../redusers/reducer.js';
-import {loadReviews} from '../../redusers/actionCreator.js';
+import {loadReviews, sortReviews} from '../../redusers/actionCreator.js';
 import Header from '../header/header.jsx';
 import FilmList from '../filmList/filmList.jsx';
 import FavoriteButton from '../favoriteButton/favoriteButton.jsx';
@@ -19,7 +19,7 @@ const FilmListWrapped = withActiveItem(FilmList);
 const FavoriteButtonWrapped = withFavoriteButton(FavoriteButton);
 const FilmTabsWrapped = withTabs(FilmTabs);
 
-class DetailPage extends Component {
+class DetailPage extends PureComponent {
   componentDidMount() {
     this.props.loadReviews(this.props.film.id);
   }
@@ -36,7 +36,7 @@ class DetailPage extends Component {
 
           <h1 className="visually-hidden">WTW</h1>
 
-          <Header isAuthorizationRequired={isAuthorizationRequired} avatarUrl={avatarUrl} />
+          <Header isAuthorizationRequired={isAuthorizationRequired} avatarUrl={avatarUrl} personalClass={`movie-card__head`} />
 
           <div className="movie-card__wrap">
             <div className="movie-card__desc">
@@ -54,7 +54,8 @@ class DetailPage extends Component {
                   <span>Play</span>
                 </button>
                 <FavoriteButtonWrapped idFilm={id} isFavorite={isFavorite} toggleFavoriteFilm={toggleFavoriteFilm} />
-                <a href="add-review.html" className="btn movie-card__button">Add review</a>
+                {this._getReviewButton(isAuthorizationRequired, id)}
+                {/* <Link to={`/films/${id}/review`} className="btn movie-card__button">Add review</Link> */}
               </div>
             </div>
           </div>
@@ -96,6 +97,13 @@ class DetailPage extends Component {
       </div>
     </React.Fragment>;
   }
+
+  _getReviewButton(isAuthorization, id) {
+    if (isAuthorization) {
+      return null;
+    }
+    return <Link to={`/films/${id}/review`} className="btn movie-card__button">Add review</Link>;
+  }
 }
 
 DetailPage.propTypes = {
@@ -117,7 +125,7 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   isAuthorizationRequired: state.load.isAuthorizationRequired,
   avatarUrl: state.load.userData.avatarUrl,
   reviewsLoading: state.load.reviewsLoading,
-  reviews: state.load.reviews,
+  reviews: sortReviews(state.load.reviews),
 });
 
 const mapDispatchToProps = (dispatch) => {

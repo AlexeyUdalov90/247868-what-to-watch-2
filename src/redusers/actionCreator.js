@@ -4,6 +4,10 @@ const getGenresList = (filmsList) => {
   return Array.from(genresList).sort();
 };
 
+const sortReviews = (reviews) => {
+  return reviews.sort((review1, review2) => new Date(review2.date).getTime() - new Date(review1.date).getTime());
+};
+
 const getFilmRating = (rating) => {
   const roundRating = Math.round(rating);
   if (roundRating >= 0 && roundRating < 3) {
@@ -88,11 +92,14 @@ const ActionType = {
   REVIEWS_LOADING: `REVIEWS_LOADING`,
   REVIEWS_LOADED: `REVIEWS_LOADED`,
   SET_REVIEWS: `SET_REVIEWS`,
+  FAVORITE_FILMS_LOADING: `FAVORITE_FILMS_LOADING`,
+  FAVORITE_FILMS_LOADED: `FAVORITE_FILMS_LOADED`,
+  SET_FAVORITE_FILMS: `SET_FAVORITE_FILMS`,
 };
 
 const loadFilms = () => (dispatch, _, api) => {
   dispatch({type: ActionType.FILM_LOADING});
-  api.get(`/films`)
+  return api.get(`/films`)
     .then((response) => {
       dispatch({type: ActionType.FILM_LOADED});
       dispatch(setFilms(response.data));
@@ -117,7 +124,7 @@ const changeGenre = (genre) => ({
 
 const loadPromoFilm = () => (dispatch, _, api) => {
   dispatch({type: ActionType.PROMO_FILM_LOADING});
-  api.get(`/films/promo`)
+  return api.get(`/films/promo`)
     .then((response) => {
       dispatch({type: ActionType.PROMO_FILM_LOADED});
       dispatch(setPromoFilm(response.data));
@@ -126,10 +133,18 @@ const loadPromoFilm = () => (dispatch, _, api) => {
 
 const loadReviews = (idFilm) => (dispatch, _, api) => {
   dispatch({type: ActionType.REVIEWS_LOADING});
-  api.get(`/comments/${idFilm}`)
+  return api.get(`/comments/${idFilm}`)
     .then((response) => {
       dispatch({type: ActionType.REVIEWS_LOADED});
       dispatch(setReviews(response.data));
+    });
+};
+const loadFavoriteFilms = () => (dispatch, _, api) => {
+  dispatch({type: ActionType.FAVORITE_FILMS_LOADING});
+  return api.get(`/favorite`)
+    .then((response) => {
+      dispatch({type: ActionType.FAVORITE_FILMS_LOADED});
+      dispatch(setFavoriteFilms(response.data));
     });
 };
 
@@ -163,6 +178,11 @@ const changeFavoriteInFilms = (film) => ({
   payload: getCorrectPropName(film),
 });
 
+const setFavoriteFilms = (films) => ({
+  type: ActionType.SET_FAVORITE_FILMS,
+  payload: films.map((film) => getCorrectPropName(film)),
+});
+
 export {
   ActionType,
   changeGenre,
@@ -179,5 +199,8 @@ export {
   loadReviews,
   setReviews,
   setFilms,
-  setPromoFilm
+  setPromoFilm,
+  loadFavoriteFilms,
+  setFavoriteFilms,
+  sortReviews,
 };

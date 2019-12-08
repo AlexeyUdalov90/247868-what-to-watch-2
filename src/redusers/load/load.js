@@ -4,8 +4,10 @@ const initialState = {
   filmLoading: false,
   promoFilmLoading: false,
   reviewsLoading: false,
+  favoriteFilmsLoading: false,
   films: [],
   promoFilm: {},
+  favoriteFilms: [],
   genres: [],
   reviews: [],
   userData: {
@@ -57,8 +59,9 @@ const load = (state = initialState, action) => {
         return Object.assign({}, state, {
           promoFilm: action.payload,
         });
+      } else {
+        return state;
       }
-      return null;
     case ActionType.CHANGE_FAVORITE_IN_FILMS:
       const updateFilms = state.films.map((film) => {
         if (film.id === action.payload.id) {
@@ -80,6 +83,18 @@ const load = (state = initialState, action) => {
     case ActionType.SET_REVIEWS:
       return Object.assign({}, state, {
         reviews: action.payload,
+      });
+    case ActionType.FAVORITE_FILMS_LOADING:
+      return Object.assign({}, state, {
+        favoriteFilmsLoading: true,
+      });
+    case ActionType.FAVORITE_FILMS_LOADED:
+      return Object.assign({}, state, {
+        favoriteFilmsLoading: false,
+      });
+    case ActionType.SET_FAVORITE_FILMS:
+      return Object.assign({}, state, {
+        favoriteFilms: action.payload,
       });
   }
   return state;

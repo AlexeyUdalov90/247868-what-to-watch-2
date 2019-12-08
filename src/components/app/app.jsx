@@ -1,54 +1,48 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {Switch, Route} from 'react-router-dom';
+import {withRouter} from 'react-router';
 
-
-import {changeGenre, loadFilms, loadPromoFilm} from '../../redusers/actionCreator.js';
+import {loadFilms, loadPromoFilm} from '../../redusers/actionCreator.js';
 import {Operation} from '../../redusers/reducer.js';
 import Main from '../main/main.jsx';
 import DetailPage from '../detailPage/detailPage.jsx';
 import SignIn from '../signIn/signIn.jsx';
+import FavoriteFilmsPage from '../favoriteFilmsPage/favoriteFilmsPage.jsx';
+import ReviewPage from '../reviewPage/reviewPage.jsx';
 
 import withAuthForm from '../../hocs/withAuthForm/withAuthForm.js';
+import withAuth from '../../hocs/withAuth/withAuth.js';
+// import withReviewFrom from '../../hocs/withReviewForm/withReviewForm.js';
 
 const SignInWrapped = withAuthForm(SignIn);
 
-class App extends Component {
+class App extends PureComponent {
   componentDidMount() {
     this.props.loadFilms();
     this.props.loadPromoFilm();
   }
   render() {
-    const {onChangeFilter, genres, onSubmitSignIn} = this.props;
-
+    const {onSubmitSignIn} = this.props;
     return <Switch>
-      <Route path='/' exact render={() => {
-        return <Main onChangeFilter={onChangeFilter} genres={genres} />;
-      }} />
+      <Route path='/' exact component={Main} />
       <Route path='/login' exact render={() => <SignInWrapped onSubmitSignIn={onSubmitSignIn} />} />
-      <Route path='/films/:id' exact component={DetailPage} />
+      <Route path='/films/:id' exact component={withRouter(DetailPage)} />
+      <Route path='/mylist' exact component={withAuth(FavoriteFilmsPage)} />
+      <Route path='/films/:id/review' exact component={withAuth(withRouter(ReviewPage))}/>
     </Switch>;
   }
 }
 
 App.propTypes = {
-  genres: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onChangeFilter: PropTypes.func.isRequired,
   onSubmitSignIn: PropTypes.func.isRequired,
   loadFilms: PropTypes.func.isRequired,
   loadPromoFilm: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  genres: state.load.genres,
-});
-
 const mapDispatchToProps = (dispatch) => {
   return {
-    onChangeFilter: (genre) => {
-      dispatch(changeGenre(genre));
-    },
     onSubmitSignIn: (email, password) => {
       dispatch(Operation.authorization(email, password));
     },
@@ -63,4 +57,4 @@ const mapDispatchToProps = (dispatch) => {
 
 export {App};
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);

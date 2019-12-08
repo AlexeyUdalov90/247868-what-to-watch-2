@@ -6,6 +6,7 @@ import PromoFilm from '../promoFilm/promoFilm.jsx';
 import FilmFilter from '../filmFilter/filmFilter.jsx';
 import FilmList from '../filmList/filmList.jsx';
 
+import {changeGenre} from '../../redusers/actionCreator.js';
 import withActiveItem from '../../hocs/withActiveItem/withActiveItem.js';
 import getVisibleFilms from '../../selectors/getVisibleFilms.js';
 
@@ -56,8 +57,17 @@ Main.propTypes = {
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   filmLoading: state.load.filmLoading,
   films: getVisibleFilms(state),
+  genres: state.load.genres,
 });
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onChangeFilter: (genre) => {
+      dispatch(changeGenre(genre));
+    },
+  };
+};
 
 export {Main};
 
-export default connect(mapStateToProps)(Main);
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

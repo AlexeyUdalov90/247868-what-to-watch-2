@@ -48,12 +48,17 @@ exports[`PromoFilm correctly renders after relaunch 1`] = `
       <div
         className="user-block__avatar"
       >
-        <img
-          alt="User avatar"
-          height="63"
-          src=""
-          width="63"
-        />
+        <a
+          href="/mylist"
+          onClick={[Function]}
+        >
+          <img
+            alt="User avatar"
+            height="63"
+            src=""
+            width="63"
+          />
+        </a>
       </div>
     </div>
   </header>

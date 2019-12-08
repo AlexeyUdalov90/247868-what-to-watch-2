@@ -21,7 +21,7 @@ const PromoFilm = ({promoFilm, promoFilmLoading, toggleFavoriteFilm, isAuthoriza
 
     <h1 className="visually-hidden">WTW</h1>
 
-    <Header isAuthorizationRequired={isAuthorizationRequired} avatarUrl={avatarUrl} />
+    <Header isAuthorizationRequired={isAuthorizationRequired} avatarUrl={avatarUrl} personalClass={`movie-card__head`} />
 
     <div className="movie-card__wrap">
       <div className="movie-card__info">

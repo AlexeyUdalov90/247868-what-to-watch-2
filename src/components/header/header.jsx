@@ -8,12 +8,14 @@ const getUserIdentification = (isAuthorizationRequired, avatarUrl) => {
   }
 
   return <div className="user-block__avatar">
-    <img src={avatarUrl} alt="User avatar" width="63" height="63" />
+    <Link to="/mylist">
+      <img src={avatarUrl} alt="User avatar" width="63" height="63" />
+    </Link>
   </div>;
 };
 
-const Header = ({isAuthorizationRequired, avatarUrl}) => {
-  return <header className="page-header movie-card__head">
+const Header = ({isAuthorizationRequired, avatarUrl, personalClass, children}) => {
+  return <header className={`page-header ${personalClass}`}>
     <div className="logo">
       <Link to="/" className="logo__link">
         <span className="logo__letter logo__letter--1">W</span>
@@ -21,7 +23,7 @@ const Header = ({isAuthorizationRequired, avatarUrl}) => {
         <span className="logo__letter logo__letter--3">W</span>
       </Link>
     </div>
-
+    {children}
     <div className="user-block">
       {getUserIdentification(isAuthorizationRequired, avatarUrl)}
     </div>
@@ -31,6 +33,8 @@ const Header = ({isAuthorizationRequired, avatarUrl}) => {
 Header.propTypes = {
   isAuthorizationRequired: PropTypes.bool.isRequired,
   avatarUrl: PropTypes.string.isRequired,
+  personalClass: PropTypes.string,
+  children: PropTypes.object,
 };
 
 export default Header;

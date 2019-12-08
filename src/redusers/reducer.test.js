@@ -1,6 +1,6 @@
 import MockAdapter from 'axios-mock-adapter';
 import createAPI from '../api.js';
-import {ActionType, changeGenre, setFilms, getGenres, requireAuthorization, saveUserData, setPromoFilm, setReviews} from './actionCreator.js';
+import {ActionType, changeGenre, setFilms, getGenres, requireAuthorization, saveUserData, setPromoFilm, setReviews, loadFilms, loadPromoFilm, loadReviews, changeFavoriteInPromoFilm, changeFavoriteInFilms, loadFavoriteFilms, setFavoriteFilms} from './actionCreator.js';
 import {reducer, Operation} from './reducer.js';
 
 describe(`Action creator works correctly`, () => {
@@ -46,18 +46,101 @@ describe(`Action creator works correctly`, () => {
       payload: {},
     });
   });
-  // it(`Action creator for load films return correct action`, () => {
-  //   const dispatch = jest.fn();
-  //   const api = createAPI(dispatch);
-  //   const apiMock = new MockAdapter(api);
-  //   const filmLoader = loadFilms();
+  it(`Action creator for change favorite promo film returns correct action`, () => {
+    expect(changeFavoriteInPromoFilm({})).toEqual({
+      type: ActionType.CHANGE_FAVORITE_IN_PROMO_FILM,
+      payload: {},
+    });
+  });
+  it(`Action creator for change favorite film returns correct action`, () => {
+    expect(changeFavoriteInFilms({})).toEqual({
+      type: ActionType.CHANGE_FAVORITE_IN_FILMS,
+      payload: {},
+    });
+  });
+  it(`Action creator for set favorite film returns correct action`, () => {
+    expect(setFavoriteFilms([])).toEqual({
+      type: ActionType.SET_FAVORITE_FILMS,
+      payload: [],
+    });
+  });
 
-  //   apiMock
-  //     .onget(`/films`)
-  //     .reply(200, {fake: true});
+  it(`Action creator for load films return correct action and correct API call`, () => {
+    const dispatch = jest.fn();
+    const api = createAPI(dispatch);
+    const apiMock = new MockAdapter(api);
+    const filmLoader = loadFilms();
 
-  //   return filmLoader(dispatch, null, api)
-  // });
+    apiMock
+      .onGet(`/films`)
+      .reply(200, [{fake: true}]);
+
+    return filmLoader(dispatch, null, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(4);
+        expect(dispatch).toHaveBeenNthCalledWith(1, {type: ActionType.FILM_LOADING});
+        expect(dispatch).toHaveBeenNthCalledWith(2, {type: ActionType.FILM_LOADED});
+        expect(dispatch).toHaveBeenNthCalledWith(3, setFilms([{fake: true}]));
+        expect(dispatch).toHaveBeenNthCalledWith(4, getGenres([{fake: true}]));
+      });
+  });
+
+  it(`Action creator for load promo film return correct action and correct API call`, () => {
+    const dispatch = jest.fn();
+    const api = createAPI(dispatch);
+    const apiMock = new MockAdapter(api);
+    const promoFilmLoader = loadPromoFilm();
+
+    apiMock
+      .onGet(`/films/promo`)
+      .reply(200, {fake: true});
+
+    return promoFilmLoader(dispatch, null, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(3);
+        expect(dispatch).toHaveBeenNthCalledWith(1, {type: ActionType.PROMO_FILM_LOADING});
+        expect(dispatch).toHaveBeenNthCalledWith(2, {type: ActionType.PROMO_FILM_LOADED});
+        expect(dispatch).toHaveBeenNthCalledWith(3, setPromoFilm({fake: true}));
+      });
+  });
+
+  it(`Action creator for load reviews return correct action and correct API call`, () => {
+    const dispatch = jest.fn();
+    const api = createAPI(dispatch);
+    const apiMock = new MockAdapter(api);
+    const reviewsLoader = loadReviews(1);
+
+    apiMock
+      .onGet(`/comments/1`)
+      .reply(200, [{fake: true}]);
+
+    return reviewsLoader(dispatch, null, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(3);
+        expect(dispatch).toHaveBeenNthCalledWith(1, {type: ActionType.REVIEWS_LOADING});
+        expect(dispatch).toHaveBeenNthCalledWith(2, {type: ActionType.REVIEWS_LOADED});
+        expect(dispatch).toHaveBeenNthCalledWith(3, setReviews([{fake: true}]));
+      });
+  });
+
+  it(`Action creator for load favorite films return correct action and correct API call`, () => {
+    const dispatch = jest.fn();
+    const api = createAPI(dispatch);
+    const apiMock = new MockAdapter(api);
+    const favoriteLoader = loadFavoriteFilms();
+
+    apiMock
+      .onGet(`/favorite`)
+      .reply(200, [{fake: true}]);
+
+    return favoriteLoader(dispatch, null, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(3);
+        expect(dispatch).toHaveBeenNthCalledWith(1, {type: ActionType.FAVORITE_FILMS_LOADING});
+        expect(dispatch).toHaveBeenNthCalledWith(2, {type: ActionType.FAVORITE_FILMS_LOADED});
+        expect(dispatch).toHaveBeenNthCalledWith(3, setFavoriteFilms([{fake: true}]));
+      });
+  });
 });
 
 describe(`Reducer works correctly`, () => {
@@ -148,6 +231,26 @@ describe(`Reducer works correctly`, () => {
         expect(dispatch).toHaveBeenNthCalledWith(2, {
           type: ActionType.REQUIRE_AUTH,
           payload: false,
+        });
+      });
+  });
+
+  it(`Should make a correct API call to /comments/:id, for add review`, () => {
+    const dispatch = jest.fn();
+    const api = createAPI(dispatch);
+    const apiMock = new MockAdapter(api);
+    const sendReview = Operation.sendReview(1, 4, `Не следует, однако забывать, что новая модель организационной деятельности играет важную роль в формировании существенных финансовых и административных условий.`);
+
+    apiMock
+      .onPost(`/comments/1`, {rating: 4, comment: `Не следует, однако забывать, что новая модель организационной деятельности играет важную роль в формировании существенных финансовых и административных условий.`})
+      .reply(200, [{fake: true}]);
+
+    return sendReview(dispatch, null, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ActionType.SET_REVIEWS,
+          payload: [{fake: true}],
         });
       });
   });

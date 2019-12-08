@@ -2,7 +2,7 @@
 
 exports[`Header correctly renders after relaunch 1`] = `
 <header
-  className="page-header movie-card__head"
+  className="page-header undefined"
 >
   <div
     className="logo"
@@ -35,12 +35,17 @@ exports[`Header correctly renders after relaunch 1`] = `
     <div
       className="user-block__avatar"
     >
-      <img
-        alt="User avatar"
-        height="63"
-        src=""
-        width="63"
-      />
+      <a
+        href="/mylist"
+        onClick={[Function]}
+      >
+        <img
+          alt="User avatar"
+          height="63"
+          src=""
+          width="63"
+        />
+      </a>
     </div>
   </div>
 </header>

@@ -2,7 +2,7 @@ import {combineReducers} from 'redux';
 import user from './user/user.js';
 import load from './load/load.js';
 import history from '../history.js';
-import {saveUserData, requireAuthorization, changeFavoriteInPromoFilm, changeFavoriteInFilms} from './actionCreator.js';
+import {saveUserData, requireAuthorization, changeFavoriteInPromoFilm, changeFavoriteInFilms, setReviews} from './actionCreator.js';
 
 const reducer = combineReducers({user, load});
 
@@ -32,6 +32,13 @@ const Operation = {
         dispatch(changeFavoriteInFilms(response.data));
       });
   },
+  sendReview: (id, rating, comment) => (dispatch, _, api) => {
+    return api.post(`/comments/${id}`, {rating, comment})
+      .then((response) => {
+        dispatch(setReviews(response.data));
+        history.push(`/films/${id}`);
+      });
+  }
 };
 
 export {
