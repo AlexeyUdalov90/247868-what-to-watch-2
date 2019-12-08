@@ -9,7 +9,7 @@ const getUserIdentification = (isAuthorizationRequired, avatarUrl) => {
 
   return <div className="user-block__avatar">
     <Link to="/mylist">
-      <img src={avatarUrl} alt="User avatar" width="63" height="63" />
+      <img src={`https://htmlacademy-react-2.appspot.com${avatarUrl}`} alt="User avatar" width="63" height="63" />
     </Link>
   </div>;
 };
