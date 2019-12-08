@@ -1,11 +1,13 @@
 import React from 'react';
-import {BrowserRouter as Router} from 'react-router-dom';
-import Enzyme, {shallow} from 'enzyme';
+import {MemoryRouter} from 'react-router-dom';
+import Enzyme, {mount} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
 import FilmCard from './filmCard.jsx';
 
 Enzyme.configure({adapter: new Adapter()});
+
+jest.useFakeTimers();
 
 it(`Mouse enter on film card`, () => {
   const moсks = {
@@ -14,10 +16,11 @@ it(`Mouse enter on film card`, () => {
     previewVideoLink: ``,
   };
   const mouseEnterHandler = jest.fn();
-  shallow(<Router><FilmCard film={moсks} onClickTitle={jest.fn()} isPlaying={false} onMouseEnterFilm={mouseEnterHandler} onMouseLeaveFilm={jest.fn()} /></Router>)
-    .children()
+  mount(<MemoryRouter><FilmCard film={moсks} onClick={jest.fn()} isPlaying={false} onMouseEnterFilmHandler={mouseEnterHandler} onMouseLeaveFilmHandler={jest.fn()} /></MemoryRouter>)
     .find(`.small-movie-card`)
     .simulate(`mouseenter`);
+
+  jest.runAllTimers();
 
   expect(mouseEnterHandler).toHaveBeenCalled();
 });

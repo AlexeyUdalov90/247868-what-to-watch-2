@@ -14,7 +14,6 @@ import ReviewPage from '../reviewPage/reviewPage.jsx';
 
 import withAuthForm from '../../hocs/withAuthForm/withAuthForm.js';
 import withAuth from '../../hocs/withAuth/withAuth.js';
-// import withReviewFrom from '../../hocs/withReviewForm/withReviewForm.js';
 
 const SignInWrapped = withAuthForm(SignIn);
 

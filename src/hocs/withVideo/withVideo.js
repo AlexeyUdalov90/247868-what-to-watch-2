@@ -6,62 +6,44 @@ const withVideo = (Component) => {
     constructor(props) {
       super(props);
 
-      this._videoRef = React.createRef();
-
       this.state = {
         isLoading: true,
         isPlaying: this.props.isPlaying,
       };
+
+      this._onPlay = this._onPlay.bind(this);
+      this._onStop = this._onStop.bind(this);
+      this._onLoaded = this._onLoaded.bind(this);
     }
     render() {
       return (
         <Component
           {...this.props}
-          videoRef = {this._videoRef}
+          onPlay={this._onPlay}
+          onStop={this._onStop}
+          onLoaded={this._onLoaded}
         />
       );
     }
-    componentDidMount() {
-      const {previewVideoLink} = this.props;
-      const video = this._videoRef.current;
-
-      video.src = previewVideoLink;
-      video.muted = true;
-
-      video.oncanplaythrough = () => {
-        this.setState({
-          isLoading: false,
-        });
-      };
-
-      video.onplay = () => {
-        this.setState({
-          isPlaying: true,
-        });
-      };
-
-      video.onpause = () => {
-        video.load();
-        this.setState({
-          isPlaying: false,
-        });
-      };
+    _onPlay() {
+      this.setState({
+        isPlaying: true,
+      });
     }
-    componentDidUpdate() {
-      const {isPlaying} = this.props;
-      const video = this._videoRef.current;
-
-      if (isPlaying) {
-        video.play();
-      } else {
-        video.pause();
-      }
+    _onStop() {
+      this.setState({
+        isPlaying: false,
+      });
+    }
+    _onLoaded() {
+      this.setState({
+        isLoading: false,
+      });
     }
   }
 
   WithVideo.propTypes = {
     isPlaying: PropTypes.bool.isRequired,
-    previewVideoLink: PropTypes.string.isRequired,
   };
 
   return WithVideo;
