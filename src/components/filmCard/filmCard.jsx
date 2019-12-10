@@ -48,6 +48,7 @@ class FilmCard extends PureComponent {
   }
   _onClickHandler() {
     const {film: {id}} = this.props;
+    clearTimeout(this._timerId);
     history.push(`/films/${id}`);
   }
 }

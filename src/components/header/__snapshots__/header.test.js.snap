@@ -42,7 +42,7 @@ exports[`Header correctly renders after relaunch 1`] = `
         <img
           alt="User avatar"
           height="63"
-          src=""
+          src="https://htmlacademy-react-2.appspot.com"
           width="63"
         />
       </a>

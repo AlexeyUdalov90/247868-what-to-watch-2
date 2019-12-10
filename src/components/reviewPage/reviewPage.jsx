@@ -92,7 +92,7 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, state, {
 const mapDispatchToProps = (dispatch) => {
   return {
     sendReview: (id, rating, comment) => {
-      dispatch(Operation.sendReview(id, rating, comment));
+      return dispatch(Operation.sendReview(id, rating, comment));
     },
   };
 };

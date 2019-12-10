@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import history from '../../history.js';
 
 const withReviewForm = (Component) => {
   class WithReviewForm extends PureComponent {
@@ -49,7 +50,22 @@ const withReviewForm = (Component) => {
     _onSubmitHandler(evt) {
       evt.preventDefault();
       const {sendReview, film} = this.props;
-      sendReview(film.id, this.state.rating, this.state.comment);
+      const reviewFormElements = Array.from(evt.target.elements);
+      reviewFormElements.forEach((element) => {
+        element.disabled = true;
+      });
+      sendReview(film.id, this.state.rating, this.state.comment)
+        .then(() => {
+          reviewFormElements.forEach((element) => {
+            element.disabled = false;
+          });
+          history.push(`/films/${film.id}`);
+        })
+        .catch(() => {
+          reviewFormElements.forEach((element) => {
+            element.disabled = false;
+          });
+        });
     }
 
     _checkReviewData() {

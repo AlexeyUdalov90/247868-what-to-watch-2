@@ -36,7 +36,6 @@ const Operation = {
     return api.post(`/comments/${id}`, {rating, comment})
       .then((response) => {
         dispatch(setReviews(response.data));
-        history.push(`/films/${id}`);
       });
   }
 };
